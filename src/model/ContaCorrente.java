@@ -13,11 +13,36 @@ public class ContaCorrente extends Conta{
 
     @Override
     public boolean sacar(double valor){
-        //TODO: Verificar as restrições
-        if(valor <= saldo+getCliente().getLimiteCredito()){
-            saldo -= valor;
-            return true;
-        }else{
+        try {
+            double limite = this.getCliente().getLimiteCredito();
+            if((this.getSaldo() + limite) - valor  <= 0){
+                return false;
+            }
+            else if(limite - valor >= 0){
+                this.getCliente().setLimiteCredito(this.getCliente().getLimiteCredito() - valor);
+                return true;
+            }
+
+            else  if((limite + this.getSaldo()) - valor >= 0){
+                this.getCliente().setLimiteCredito(0);
+                this.setSaldo(this.getSaldo() + limite - valor);
+                return true;
+            }
+            return false;
+        } catch(Exception e){
+            return false;
+        }
+    }
+
+    @Override
+    public boolean transferir(Conta conta, double valor){
+        try {
+            if(this.sacar(valor)){
+                conta.depositar(valor);
+                return true;
+            }
+            return false;
+        } catch(Exception e){
             return false;
         }
     }

@@ -21,8 +21,7 @@ public class ContaPoupanca extends Conta{
 
     @Override
     public boolean sacar(double valor) {
-        //TODO: verificar as restrições
-        if(valor <= saldo){
+        if(saldo - valor >= 0){
             saldo -= valor;
             return true;
         }else{
