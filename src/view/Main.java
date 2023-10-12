@@ -47,7 +47,7 @@ public class Main {
                             // Valores default
                             double saldo = 0;
                             LocalDate dataAbertura = LocalDate.now();
-                            double taxaJuros = 0;
+                            double taxaJuros = 120;
                             double limitCred = 0;
 
                             // Informações sobre a conta
@@ -172,63 +172,71 @@ public class Main {
                         }
                         case 3 -> {
 
-                            contas.forEach((conta -> {
-                                System.out.println(conta.getCliente());
-                            }));
+                            System.out.println("\n Informe: \n (1) para acessar conta poupança \n (2) para acessar conta corrente \n");
+                            int tipoPessoa = numbers.nextInt();
+
+                            if (tipoPessoa != 1 && tipoPessoa != 2) {
+                                System.out.println("Opção inválida");
+                                break;
+                            }
+
+                            if (tipoPessoa == 1) {
+                                System.out.println("Informe o numero da sua conta: ");
+                                int numeroConta = numbers.nextInt();
+
+                                PessoaFisica clienteSpan = new PessoaFisica(0, new Endereco("span", 1, "span"), "123", "span", LocalDate.now());
+                                Conta newConta = new ContaPoupanca(1, numeroConta, 0, LocalDate.now(), clienteSpan, 0);
+
+                                int pos = contas.indexOf(newConta);
+                                ContaPoupanca p = (ContaPoupanca) contas.get(pos);
+
+                                System.out.println(p.getTaxaJuros());
+                                System.out.println(p.getCliente().getEndereco());
+
+                                System.out.println("\n Informe: \n (1) para depositar \n (2) para sacar \n (0) para sair ");
+                                choose = numbers.nextInt();
+
+                                while (choose != 0){
+
+                                    switch (choose) {
+                                        case 1:
+                                            System.out.println("Informe o valor que deseja depositar na conta: ");
+                                            float valor = numbers.nextFloat();
+                                            p.setSaldo(valor);
+                                            System.out.printf("\n O saldo da conta eh: R$%.2f reais \n", p.getSaldo());
+                                            break;
+
+                                        case 2:
+                                            System.out.println("Informe o valor que deseja sacar da conta: ");
+                                            valor = numbers.nextFloat();
+
+                                            if (p.sacar(valor)){
+                                                System.out.printf("\n Saque realizado com sucesso \n");
+                                                System.out.printf("\n O saldo da conta eh: R$%.2f reais \n", p.getSaldo());
+                                            } else {
+                                                System.out.printf("\n Saque não efetuado \n");
+                                            }
+                                            break;
+
+                                        case 0:
+                                            break;
+                                    }
+
+                                    System.out.println("\n Informe: \n (1) para depositar \n (2) para sacar \n (0) para sair: ");
+                                    choose = numbers.nextInt();
+
+                                }
+                            }
 
                         }
-                    }
+
+
+
+
+                            }
 
                     System.out.println("\n Informe: \n (1) para criar conta poupança \n (2) para criar conta corrente \n (3) para acessar conta \n (4) para sair");
                     choose = numbers.nextInt();
-
-
-                        // System.out.println("\n Informe: \n (1) para depositar \n (2) para sacar \n
-                        // (0) para sair ");
-                        // int choose = sc.nextInt();
-
-                        // while (choose != 0){
-
-                        // switch (choose) {
-                        // case 1:
-                        // System.out.println("Informe o valor que deseja depositar na conta: ");
-                        // float valor = sc.nextInt();
-                        // contaA.depositar(valor);
-                        // System.out.printf("\n O saldo da conta eh: R$%.2f reais \n",
-                        // contaA.getSaldo());
-                        // break;
-
-                        // case 2:
-                        // System.out.println("Informe o valor que deseja sacar da conta: ");
-                        // valor = sc.nextFloat();
-
-                        // if (contaA.sacar(valor)){
-                        // System.out.printf("\n Saque realizado com sucesso \n");
-                        // System.out.printf("\n O saldo da conta eh: R$%.2f reais \n",
-                        // contaA.getSaldo());
-                        // } else {
-                        // System.out.printf("\n Saque não efetuado \n");
-                        // }
-                        // break;
-
-                        // case 0:
-                        // break;
-                        // }
-
-                        // System.out.println("\n Informe: \n (1) para depositar \n (2) para sacar \n
-                        // (0) para sair: ");
-                        // choose = sc.nextInt();
-
-                        // }
-                        // }
-
-                        // System.out.println(
-                        // "\n Informe: \n (1) para criar conta poupança \n (2) para criar conta
-                        // corrente \n (3) para acessar conta \n (4) para sair");
-                        // choose = sc.nextInt();
-
-                        // }
-
                 }
         }
 }

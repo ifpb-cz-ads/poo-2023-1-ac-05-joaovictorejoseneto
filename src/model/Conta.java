@@ -1,6 +1,7 @@
 package model;
 
 import java.time.LocalDate;
+import java.util.Objects;
 
 public abstract class Conta {
 
@@ -16,6 +17,10 @@ public abstract class Conta {
         this.saldo = saldo;
         this.dataAbertura = dataAbertura;
         this.cliente = cliente;
+    }
+
+    public Conta(int numero){
+        this.numero = numero;
     }
 
     public boolean depositar(double valor){
@@ -78,5 +83,18 @@ public abstract class Conta {
 
     public void setCliente(Cliente cliente) {
         this.cliente = cliente;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Conta conta = (Conta) o;
+        return this.numero == conta.getNumero();
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(agencia, numero, saldo, dataAbertura, cliente);
     }
 }
