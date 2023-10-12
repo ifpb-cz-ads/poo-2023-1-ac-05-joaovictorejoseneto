@@ -1,194 +1,211 @@
 package view;
 
-import model.Cliente;
-import model.Conta;
-import model.ContaCorrente;
-import model.ContaPoupanca;
-import model.Endereco;
-import model.PessoaFisica;
+import model.*;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import java.time.LocalDate;
 
 public class Main {
         public static void main(String[] args) {
-                Scanner sc = new Scanner(System.in);
+
+                Scanner input = new Scanner(System.in);
+                Scanner numbers = new Scanner(System.in);
 
                 List<Conta> contas = new ArrayList<>();
                 List<Cliente> clientes = new ArrayList<>();
 
-                System.out.println(
-                                "\n Informe: \n (1) para criar conta poupança \n (2) para criar conta corrente \n (3) para acessar conta \n (4) para sair");
-                int choose = sc.nextInt();
+                System.out.println("\n Informe: \n (1) para criar conta poupança \n (2) para criar conta corrente \n (3) para acessar conta \n (4) para sair");
+                int choose = numbers.nextInt();
 
                 while (choose != 4) {
 
-                        switch (choose) {
-                                case 1:
-                                        // Cadastro do usuário
-                                        System.out.println("Informe o nome da sua rua: ");
-                                        String rua = sc.nextLine();
+                    switch (choose) {
 
-                                        System.out.println("Informe o numero da casa: ");
-                                        int numero = sc.nextInt();
+                        case 1 -> {
 
-                                        System.out.println("Informe a cidade onde voce mora: ");
-                                        String cidade = sc.nextLine();
+                            System.out.println("\n Informe: \n (1) para criar conta pessoa fisica \n (2) para criar conta pessoa juridica \n");
+                            int tipoPessoa = numbers.nextInt();
 
-                                        System.out.println("Informe seu limite de credito: ");
-                                        double limite = sc.nextDouble();
+                            System.out.println("Informe o numero da casa: ");
+                            int numero = numbers.nextInt();
 
-                                        System.out.println("Informe seu limite de credito: ");
-                                        String cpf = sc.nextLine();
+                            System.out.println("Informe o nome da sua rua: ");
+                            String rua = input.nextLine();
 
-                                        System.out.println("Informe seu nome: ");
-                                        String nome = sc.nextLine();
+                            System.out.println("Informe a cidade onde você mora: ");
+                            String cidade = input.nextLine();
 
-                                        System.out.println("Informe sua data de nascimento: ");
-                                        String idade = sc.nextLine();
+                            double saldo = 0;
+                            LocalDate dataAbertura = LocalDate.now();
+                            double taxaJuros = 0;
+                            double limitCred = 0;
 
-                                        String[] parts = idade.split("/");
-                                        LocalDate dataNascimento = LocalDate.of(Integer.parseInt(parts[2]),
-                                                        Integer.parseInt(parts[1]), Integer.parseInt(parts[0]));
+                            System.out.println("Informe o número da agencia: ");
+                            int agencia = numbers.nextInt();
 
-                                        Endereco endereco = new Endereco(rua, numero, cidade);
-                                        Cliente novoCliente = new PessoaFisica(limite, endereco, cpf, nome,
-                                                        dataNascimento);
+                            System.out.println("Informe o numero da conta: ");
+                            int numeroConta = numbers.nextInt();
 
-                                        /// Cadastro da conta
+                            if (tipoPessoa == 1){
+                                System.out.println("Informe seu cpf: ");
+                                String cpf = input.nextLine();
 
-                                        double saldo = 0;
-                                        LocalDate dataAbertura = LocalDate.now();
-                                        double taxaJuros = 0;
+                                System.out.println("Informe seu nome: ");
+                                String nome = input.nextLine();
 
-                                        System.out.println("Informe o número da agencia: ");
-                                        int agencia = sc.nextInt();
+                                System.out.println("Informe sua data de nascimento: ");
+                                String idade = input.nextLine();
 
-                                        System.out.println("Informe o numero da conta: ");
-                                        int numeroConta = sc.nextInt();
+                                String[] parts = idade.split("/");
+                                LocalDate dataNascimento = LocalDate.of(Integer.parseInt(parts[2]), Integer.parseInt(parts[1]), Integer.parseInt(parts[0]));
 
-                                        ContaPoupanca contaPoupanca = new ContaPoupanca(agencia, numeroConta, saldo,
-                                                        dataAbertura, novoCliente, taxaJuros);
+                                Endereco endereco = new Endereco(rua, numero, cidade);
+                                PessoaFisica clienteFisico = new PessoaFisica(limitCred, endereco, cpf, nome, dataNascimento);
 
-                                        clientes.add(novoCliente);
-                                        contas.add(contaPoupanca);                
-                                        break;
+                                ContaPoupanca contaPoupanca = new ContaPoupanca(agencia, numeroConta, saldo, dataAbertura, clienteFisico, taxaJuros);
 
-                                case 2:
-                                        // Cadastro do usuário
-                                        System.out.println("Informe o nome da sua rua: ");
-                                        String ruaCliente = sc.nextLine();
+                                clientes.add(clienteFisico);
+                                contas.add(contaPoupanca);
 
-                                        System.out.println("Informe o numero da casa: ");
-                                        int numeroCliente = sc.nextInt();
+                            } else if (tipoPessoa == 2) {
+                                System.out.println("Informe seu cnpj: ");
+                                String cnpj = input.nextLine();
 
-                                        System.out.println("Informe a cidade onde voce mora: ");
-                                        String cidadeCliente = sc.nextLine();
+                                System.out.println("Informe sua razão social: ");
+                                String razaoSocial = input.nextLine();
 
-                                        System.out.println("Informe seu limite de credito: ");
-                                        double limiteCliente = sc.nextDouble();
+                                Endereco endereco = new Endereco(rua, numero, cidade);
+                                PessoaJuridica clienteJuridico = new PessoaJuridica(limitCred, endereco, cnpj, razaoSocial);
 
-                                        System.out.println("Informe seu limite de credito: ");
-                                        String cpfCliente = sc.nextLine();
+                                ContaPoupanca contaPoupanca = new ContaPoupanca(agencia, numeroConta, saldo, dataAbertura, clienteJuridico, taxaJuros);
 
-                                        System.out.println("Informe seu nome: ");
-                                        String nomeCliente = sc.nextLine();
+                                clientes.add(clienteJuridico);
+                                contas.add(contaPoupanca);
+                            }
+                        }
+                        case 2 -> {
+                            System.out.println("\n Informe: \n (1) para criar conta pessoa fisica \n (2) para criar conta pessoa juridica \n");
+                            int tipoPessoa = numbers.nextInt();
 
-                                        System.out.println("Informe sua data de nascimento: ");
-                                        String idadeCliente = sc.nextLine();
+                            System.out.println("Informe o numero da casa: ");
+                            int numeroCasa = numbers.nextInt();
 
-                                        String[] partes = idadeCliente.split("/");
-                                        LocalDate dataNascimentoCliente = LocalDate.of(Integer.parseInt(partes[2]),
-                                                        Integer.parseInt(partes[1]), Integer.parseInt(partes[0]));
+                            System.out.println("Informe o nome da sua rua: ");
+                            String rua = input.nextLine();
 
-                                        Endereco novoEndereco1 = new Endereco(ruaCliente, numeroCliente, cidadeCliente);
-                                        Cliente novoCliente1 = new PessoaFisica(limiteCliente, novoEndereco1,
-                                                        cpfCliente, nomeCliente,
-                                                        dataNascimentoCliente);
+                            System.out.println("Informe a cidade onde você mora: ");
+                            String cidade = input.nextLine();
 
-                                        /// Cadastro da conta
+                            double saldo = 0;
+                            LocalDate dataAbertura = LocalDate.now();
+                            double taxaManuntencao = 0;
+                            double limitCred = 0;
 
-                                        double saldoConta = 0;
-                                        LocalDate dataAberturaConta = LocalDate.now();
-                                        double taxaJurosConta = 0;
+                            System.out.println("Informe o número da agencia: ");
+                            int agencia = numbers.nextInt();
 
-                                        System.out.println("Informe o número da agencia: ");
-                                        int agenciaConta = sc.nextInt();
+                            System.out.println("Informe o numero da conta: ");
+                            int numeroConta = numbers.nextInt();
 
-                                        System.out.println("Informe o numero da conta: ");
-                                        int numeroConta1 = sc.nextInt();
+                            if (tipoPessoa == 1){
+                                System.out.println("Informe seu cpf: ");
+                                String cpf = input.nextLine();
 
-                                        ContaCorrente contaCorrente = new ContaCorrente(agenciaConta, numeroConta1,
-                                                        saldoConta, dataAberturaConta, novoCliente1, numeroConta1);
+                                System.out.println("Informe seu nome: ");
+                                String nome = input.nextLine();
 
-                                        clientes.add(novoCliente1);
-                                        contas.add(contaCorrente);
+                                System.out.println("Informe sua data de nascimento: ");
+                                String idade = input.nextLine();
 
-                                        break;
+                                String[] parts = idade.split("/");
+                                LocalDate dataNascimento = LocalDate.of(Integer.parseInt(parts[2]), Integer.parseInt(parts[1]), Integer.parseInt(parts[0]));
 
-                                
-                                case 3:
+                                Endereco endereco = new Endereco(rua, numeroCasa, cidade);
+                                PessoaFisica clienteFisico = new PessoaFisica(limitCred, endereco, cpf, nome, dataNascimento);
 
-                                        while (true) {
-                                                System.out.println("Informe o numero da conta: ");
-                                                int ruaCliente = sc.nextInt();
+                                ContaCorrente contaCorrente = new ContaCorrente(agencia, numeroConta, saldo, dataAbertura, clienteFisico, taxaManuntencao);
 
-                                                contas.forEach( (Conta conta) -> {
-                                                        if (conta.)
-                                                });
-                                        }
+                                clientes.add(clienteFisico);
+                                contas.add(contaCorrente);
+
+                            } else if (tipoPessoa == 2) {
+                                System.out.println("Informe seu cnpj: ");
+                                String cnpj = input.nextLine();
+
+                                System.out.println("Informe sua razão social: ");
+                                String razaoSocial = input.nextLine();
+
+                                Endereco endereco = new Endereco(rua, numeroCasa, cidade);
+                                PessoaJuridica clienteJuridico = new PessoaJuridica(limitCred, endereco, cnpj, razaoSocial);
+
+                                ContaCorrente contaCorrente = new ContaCorrente(agencia, numeroConta, saldo, dataAbertura, clienteJuridico, taxaManuntencao);
+
+                                clientes.add(clienteJuridico);
+                                contas.add(contaCorrente);
+                            }
 
                         }
+                        case 3 -> {
+
+                            contas.forEach((conta -> {
+                                System.out.println(conta.getCliente());
+                            }));
+
+                        }
+                    }
+
+                    System.out.println("\n Informe: \n (1) para criar conta poupança \n (2) para criar conta corrente \n (3) para acessar conta \n (4) para sair");
+                    choose = numbers.nextInt();
 
 
-                                        // System.out.println("\n Informe: \n (1) para depositar \n (2) para sacar \n (0) para sair ");
-                                        // int choose = sc.nextInt();
+                        // System.out.println("\n Informe: \n (1) para depositar \n (2) para sacar \n
+                        // (0) para sair ");
+                        // int choose = sc.nextInt();
 
-                                        // while (choose != 0){
+                        // while (choose != 0){
 
-                                        // switch (choose) {
-                                        // case 1:
-                                        // System.out.println("Informe o valor que deseja depositar na conta: ");
-                                        // float valor = sc.nextInt();
-                                        // contaA.depositar(valor);
-                                        // System.out.printf("\n O saldo da conta eh: R$%.2f reais \n",
-                                        // contaA.getSaldo());
-                                        // break;
+                        // switch (choose) {
+                        // case 1:
+                        // System.out.println("Informe o valor que deseja depositar na conta: ");
+                        // float valor = sc.nextInt();
+                        // contaA.depositar(valor);
+                        // System.out.printf("\n O saldo da conta eh: R$%.2f reais \n",
+                        // contaA.getSaldo());
+                        // break;
 
-                                        // case 2:
-                                        // System.out.println("Informe o valor que deseja sacar da conta: ");
-                                        // valor = sc.nextFloat();
+                        // case 2:
+                        // System.out.println("Informe o valor que deseja sacar da conta: ");
+                        // valor = sc.nextFloat();
 
-                                        // if (contaA.sacar(valor)){
-                                        // System.out.printf("\n Saque realizado com sucesso \n");
-                                        // System.out.printf("\n O saldo da conta eh: R$%.2f reais \n",
-                                        // contaA.getSaldo());
-                                        // } else {
-                                        // System.out.printf("\n Saque não efetuado \n");
-                                        // }
-                                        // break;
+                        // if (contaA.sacar(valor)){
+                        // System.out.printf("\n Saque realizado com sucesso \n");
+                        // System.out.printf("\n O saldo da conta eh: R$%.2f reais \n",
+                        // contaA.getSaldo());
+                        // } else {
+                        // System.out.printf("\n Saque não efetuado \n");
+                        // }
+                        // break;
 
-                                        // case 0:
-                                        // break;
-                                        // }
+                        // case 0:
+                        // break;
+                        // }
 
-                                        // System.out.println("\n Informe: \n (1) para depositar \n (2) para sacar \n
-                                        // (0) para sair: ");
-                                        // choose = sc.nextInt();
+                        // System.out.println("\n Informe: \n (1) para depositar \n (2) para sacar \n
+                        // (0) para sair: ");
+                        // choose = sc.nextInt();
 
-                                        // }
-                                        //         }
+                        // }
+                        // }
 
-                                        //         System.out.println(
-                                        //                         "\n Informe: \n (1) para criar conta poupança \n (2) para criar conta corrente \n (3) para acessar conta \n (4) para sair");
-                                        //         choose = sc.nextInt();
+                        // System.out.println(
+                        // "\n Informe: \n (1) para criar conta poupança \n (2) para criar conta
+                        // corrente \n (3) para acessar conta \n (4) para sair");
+                        // choose = sc.nextInt();
 
-                                        // }
+                        // }
 
-                
-                                        }
-                                }
+                }
+        }
 }
