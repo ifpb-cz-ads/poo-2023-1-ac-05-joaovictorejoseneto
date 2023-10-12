@@ -24,10 +24,17 @@ public class Main {
                     switch (choose) {
 
                         case 1 -> {
+                            // Tipo de cliente a ser cadastrado
 
                             System.out.println("\n Informe: \n (1) para criar conta pessoa fisica \n (2) para criar conta pessoa juridica \n");
                             int tipoPessoa = numbers.nextInt();
 
+                            if  (tipoPessoa != 1 && tipoPessoa != 2){
+                                System.out.println("Opção inválida");
+                                break;
+                            }
+
+                            // Informações referente ao endereço
                             System.out.println("Informe o numero da casa: ");
                             int numero = numbers.nextInt();
 
@@ -37,10 +44,13 @@ public class Main {
                             System.out.println("Informe a cidade onde você mora: ");
                             String cidade = input.nextLine();
 
+                            // Valores default
                             double saldo = 0;
                             LocalDate dataAbertura = LocalDate.now();
                             double taxaJuros = 0;
                             double limitCred = 0;
+
+                            // Informações sobre a conta
 
                             System.out.println("Informe o número da agencia: ");
                             int agencia = numbers.nextInt();
@@ -48,6 +58,7 @@ public class Main {
                             System.out.println("Informe o numero da conta: ");
                             int numeroConta = numbers.nextInt();
 
+                            // Ser for pessoa fisica
                             if (tipoPessoa == 1){
                                 System.out.println("Informe seu cpf: ");
                                 String cpf = input.nextLine();
@@ -69,6 +80,7 @@ public class Main {
                                 clientes.add(clienteFisico);
                                 contas.add(contaPoupanca);
 
+                            // Se for pessoa juridica
                             } else if (tipoPessoa == 2) {
                                 System.out.println("Informe seu cnpj: ");
                                 String cnpj = input.nextLine();
@@ -86,9 +98,16 @@ public class Main {
                             }
                         }
                         case 2 -> {
+                            // Tipo de cliente a ser cadastrado
                             System.out.println("\n Informe: \n (1) para criar conta pessoa fisica \n (2) para criar conta pessoa juridica \n");
                             int tipoPessoa = numbers.nextInt();
 
+                            if  (tipoPessoa != 1 && tipoPessoa != 2){
+                                System.out.println("Opção inválida");
+                                break;
+                            }
+
+                            // Informações referente ao endereço
                             System.out.println("Informe o numero da casa: ");
                             int numeroCasa = numbers.nextInt();
 
@@ -98,17 +117,20 @@ public class Main {
                             System.out.println("Informe a cidade onde você mora: ");
                             String cidade = input.nextLine();
 
+                            // Valores default
                             double saldo = 0;
                             LocalDate dataAbertura = LocalDate.now();
                             double taxaManuntencao = 0;
                             double limitCred = 0;
 
+                            // Informações sobre a conta
                             System.out.println("Informe o número da agencia: ");
                             int agencia = numbers.nextInt();
 
                             System.out.println("Informe o numero da conta: ");
                             int numeroConta = numbers.nextInt();
 
+                            // Ser for pessoa fisica
                             if (tipoPessoa == 1){
                                 System.out.println("Informe seu cpf: ");
                                 String cpf = input.nextLine();
@@ -130,6 +152,7 @@ public class Main {
                                 clientes.add(clienteFisico);
                                 contas.add(contaCorrente);
 
+                                // Ser for pessoa juridica
                             } else if (tipoPessoa == 2) {
                                 System.out.println("Informe seu cnpj: ");
                                 String cnpj = input.nextLine();
