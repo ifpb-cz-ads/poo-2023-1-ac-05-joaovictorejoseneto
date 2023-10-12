@@ -15,7 +15,7 @@ public class ContaCorrente extends Conta{
     public boolean sacar(double valor){
         try {
             double limite = this.getCliente().getLimiteCredito();
-            if((this.getSaldo() + limite) - valor  <= 0){
+            if((this.getSaldo() + limite) - valor  < 0){
                 return false;
             }
             else if(limite - valor >= 0){

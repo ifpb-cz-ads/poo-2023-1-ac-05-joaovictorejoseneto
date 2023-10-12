@@ -14,7 +14,10 @@ public class Main {
                 Scanner numbers = new Scanner(System.in);
 
                 List<Conta> contas = new ArrayList<>();
-                List<Cliente> clientes = new ArrayList<>();
+
+                contas.add(new ContaCorrente(1, 123, 600.0, LocalDate.now(), new PessoaFisica(200, new Endereco("1", 2, "3"), "123", "JV", LocalDate.now()), 1000));
+                contas.add(new ContaPoupanca(1, 124, 600.0, LocalDate.now(), new PessoaFisica(200, new Endereco("1", 2, "3"), "123", "JV", LocalDate.now()), 1000));
+
 
                 System.out.println("\n Informe: \n (1) para criar conta poupança \n (2) para criar conta corrente \n (3) para acessar conta \n (4) para sair");
                 int choose = numbers.nextInt();
@@ -77,7 +80,6 @@ public class Main {
 
                                 ContaPoupanca contaPoupanca = new ContaPoupanca(agencia, numeroConta, saldo, dataAbertura, clienteFisico, taxaJuros);
 
-                                clientes.add(clienteFisico);
                                 contas.add(contaPoupanca);
 
                             // Se for pessoa juridica
@@ -93,7 +95,6 @@ public class Main {
 
                                 ContaPoupanca contaPoupanca = new ContaPoupanca(agencia, numeroConta, saldo, dataAbertura, clienteJuridico, taxaJuros);
 
-                                clientes.add(clienteJuridico);
                                 contas.add(contaPoupanca);
                             }
                         }
@@ -149,7 +150,6 @@ public class Main {
 
                                 ContaCorrente contaCorrente = new ContaCorrente(agencia, numeroConta, saldo, dataAbertura, clienteFisico, taxaManuntencao);
 
-                                clientes.add(clienteFisico);
                                 contas.add(contaCorrente);
 
                                 // Ser for pessoa juridica
@@ -165,7 +165,6 @@ public class Main {
 
                                 ContaCorrente contaCorrente = new ContaCorrente(agencia, numeroConta, saldo, dataAbertura, clienteJuridico, taxaManuntencao);
 
-                                clientes.add(clienteJuridico);
                                 contas.add(contaCorrente);
                             }
 
@@ -173,14 +172,14 @@ public class Main {
                         case 3 -> {
 
                             System.out.println("\n Informe: \n (1) para acessar conta poupança \n (2) para acessar conta corrente \n");
-                            int tipoPessoa = numbers.nextInt();
+                            int tipoConta = numbers.nextInt();
 
-                            if (tipoPessoa != 1 && tipoPessoa != 2) {
+                            if (tipoConta != 1 && tipoConta != 2) {
                                 System.out.println("Opção inválida");
                                 break;
                             }
 
-                            if (tipoPessoa == 1) {
+                            if (tipoConta == 1) {
                                 System.out.println("Informe o numero da sua conta: ");
                                 int numeroConta = numbers.nextInt();
 
@@ -190,10 +189,80 @@ public class Main {
                                 int pos = contas.indexOf(newConta);
                                 ContaPoupanca p = (ContaPoupanca) contas.get(pos);
 
-                                System.out.println(p.getTaxaJuros());
-                                System.out.println(p.getCliente().getEndereco());
+                                System.out.println("\n Informe: \n (1) para depositar \n (2) para sacar \n (3) para transferir \n (0) para sair ");
+                                choose = numbers.nextInt();
 
-                                System.out.println("\n Informe: \n (1) para depositar \n (2) para sacar \n (0) para sair ");
+                                while (choose != 0){
+
+                                    switch (choose) {
+                                        case 1:
+                                            System.out.println("Informe o valor que deseja depositar na conta: ");
+                                            float valor = numbers.nextFloat();
+                                            p.setSaldo(valor);
+                                            System.out.printf("\n O saldo da conta eh: R$%.2f reais \n", p.getSaldo());
+                                            break;
+
+                                        case 2:
+                                            System.out.println("Informe o valor que deseja sacar da conta: ");
+                                            valor = numbers.nextFloat();
+
+                                            if (p.sacar(valor)){
+                                                System.out.printf("\n Saque realizado com sucesso \n");
+                                                System.out.printf("\n O saldo da conta eh: R$%.2f reais \n", p.getSaldo());
+                                            } else {
+                                                System.out.printf("\n Saque não efetuado \n");
+                                            }
+                                            break;
+                                        case 3:
+                                            System.out.println("Informe o valor que deseja transferir da conta: ");
+                                            valor = numbers.nextFloat();
+
+                                            System.out.println("Para qual conta você deseja transferir: ");
+                                            contas.forEach((Conta conta) -> {
+                                                System.out.println(conta.getNumero());
+                                            });
+
+                                            int numConta = numbers.nextInt();
+
+                                            newConta.setNumero(numConta);
+
+                                            int posD = contas.indexOf(newConta);
+
+                                            if(posD < 0){
+                                                System.out.println("Essa conta não existe");
+                                                break;
+                                            }
+
+                                            Conta contaD = contas.get(posD);
+
+                                            if(!p.transferir(contaD, valor)){
+                                                System.out.println("Erro na transferencia");
+                                                break;
+                                            }
+
+                                            System.out.println("Transferencia concluida com sucesso");
+                                        case 0:
+                                            break;
+                                    }
+
+                                    System.out.println("\n Informe: \n (1) para depositar \n (2) para sacar \n (0) para sair: ");
+                                    choose = numbers.nextInt();
+
+                                }
+                            }
+
+                            else if (tipoConta == 2) {
+                                System.out.println("Informe o numero da sua conta: ");
+                                int numeroConta = numbers.nextInt();
+
+                                PessoaFisica clienteSpan = new PessoaFisica(0, new Endereco("span", 1, "span"), "123", "span", LocalDate.now());
+                                Conta newConta = new ContaCorrente(1, numeroConta, 0, LocalDate.now(), clienteSpan, 0);
+
+                                int pos = contas.indexOf(newConta);
+                                ContaCorrente p = (ContaCorrente) contas.get(pos);
+
+
+                                System.out.println("\n Informe: \n (1) para depositar \n (2) para sacar \n (3) para transferir \n (0) para sair ");
                                 choose = numbers.nextInt();
 
                                 while (choose != 0){
@@ -218,6 +287,32 @@ public class Main {
                                             }
                                             break;
 
+                                        case 3:
+                                            System.out.println("Informe o valor que deseja transferir da conta: ");
+                                            valor = numbers.nextFloat();
+
+                                            System.out.println("Para qual conta você deseja transferir: ");
+                                            contas.forEach((Conta conta) -> {
+                                                System.out.println(conta.getNumero());
+                                            });
+
+                                            int numConta = numbers.nextInt();
+                                            newConta.setNumero(numConta);
+                                            int posD = contas.indexOf(newConta);
+
+                                            if(posD < 0){
+                                                System.out.println("Essa conta não existe");
+                                                break;
+                                            }
+
+                                            Conta contaD = contas.get(posD);
+
+                                            if(!p.transferir(contaD, valor)){
+                                                System.out.println("Erro na transferencia");
+                                                break;
+                                            }
+
+                                            System.out.println("Transferencia concluida com sucesso");
                                         case 0:
                                             break;
                                     }

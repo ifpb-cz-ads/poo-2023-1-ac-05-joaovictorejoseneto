@@ -35,7 +35,6 @@ public abstract class Conta {
             if(this.getSaldo() - valor < 0){
                 return false;
             }
-
             this.setSaldo(this.getSaldo() - valor);
             conta.setSaldo(conta.getSaldo() + valor);
             return true;
@@ -87,8 +86,6 @@ public abstract class Conta {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
         Conta conta = (Conta) o;
         return this.numero == conta.getNumero();
     }
