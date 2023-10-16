@@ -1,6 +1,7 @@
 package model;
 
 import java.time.LocalDate;
+import java.util.Objects;
 
 public abstract class Conta {
 
@@ -18,17 +19,34 @@ public abstract class Conta {
         this.cliente = cliente;
     }
 
+    public Conta(int numero){
+        this.numero = numero;
+    }
+
     public boolean depositar(double valor){
-        //TODO: Verificar problemas no preenchimento
         saldo += valor;
         return true;
     }
 
     public abstract boolean sacar(double valor);
 
+    public boolean transferir(Conta conta, double valor){
+        try {
+            if(this.getSaldo() - valor < 0){
+                return false;
+            }
+            this.setSaldo(this.getSaldo() - valor);
+            conta.setSaldo(conta.getSaldo() + valor);
+            return true;
+        } catch(Exception e){
+            return false;
+        }
+    }
+
     public int getAgencia() {
         return agencia;
     }
+
 
     public void setAgencia(int agencia) {
         this.agencia = agencia;
@@ -64,5 +82,16 @@ public abstract class Conta {
 
     public void setCliente(Cliente cliente) {
         this.cliente = cliente;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        Conta conta = (Conta) o;
+        return this.numero == conta.getNumero();
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(agencia, numero, saldo, dataAbertura, cliente);
     }
 }
